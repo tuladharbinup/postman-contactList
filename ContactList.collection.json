@@ -1,0 +1,340 @@
+{
+	"info": {
+		"_postman_id": "c9da6313-bcf9-439f-9ce5-ba81948aac08",
+		"name": "Contact List",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Endpoint Tests",
+			"item": [
+				{
+					"name": "Get Contact List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"contactID\", jsonData._id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"binupt@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"{{city}}\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n        \"jobTitle\": \"Lead Software Tester\",\r\n        \"company\": \"Google\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contact",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Binup\",\r\n    \"lastName\": \"Testing\",\r\n    \"email\": \"testbinup@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"San Francisco, CA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Lead Software Tester\",\r\n    \t\"company\": \"Apple\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts/61a11de2f2967f0ec8940d3b",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts",
+								"61a11de2f2967f0ec8940d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct email contact is returned\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"binupt@thinkingtester.com\");\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Correct first name is returned\", function () {    \r",
+									"    pm.expect(jsonData.firstName).to.eql(environment.firstName);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct last name is returned\", function () {\r",
+									"    pm.expect(jsonData.lastName).to.eql(environment.lastName);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct city is returned\", function () {\r",
+									"    pm.expect(jsonData.location.city).to.eql(environment.city);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts/{{contactID}}",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts",
+								"{{contactID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contact",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts/61a11de2f2967f0ec8940d3b",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts",
+								"61a11de2f2967f0ec8940d3b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative Tests",
+			"item": [
+				{
+					"name": "Get Contact Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts/61a11de2f2967f0ec8940d3b",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts",
+								"61a11de2f2967f0ec8940d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Missing First Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Missing first name error is returned\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"First Name is required\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"\",\r\n    \"lastName\": \"Testing\",\r\n    \"email\": \"binuptesting@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"San Francisco, CA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Lead Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Invalid Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Binup\",\r\n    \"lastName\": \"Testing\",\r\n    \"email\": \"binupthinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"San Francisco, CA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Lead Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://3.13.86.142:3000/contacts",
+							"protocol": "http",
+							"host": [
+								"3",
+								"13",
+								"86",
+								"142"
+							],
+							"port": "3000",
+							"path": [
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 3000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+					"});"
+				]
+			}
+		}
+	]
+}
